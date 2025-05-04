@@ -1,21 +1,30 @@
-const express = require('express')
-const dotenv = require('dotenv')
-dotenv.config()
-const port = process.env.PORT
+const express = require('express');
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+const auth = require('./middleware/auth'); 
+dotenv.config();
+const cors = require('cors');
 
-const connectDB = require('./dbconnect/dbconfig')
-connectDB()
-const app = express()
+const app = express();
+const port = process.env.PORT || 5000;
+const mongoURI = process.env.MONGO_URI;
 
-const bodyparser = require('body-parser')
+const authRoutes = require('./routes/authRoutes');
 
+app.use(express.json());
 
-app.use(bodyparser.urlencoded({extended:false}))
+app.use(cors());
 
-// app.get("*",(req,res)=>{
-//     res.send('whoops!! page not found')
-//   })
-  
-    
-    
-   app.listen(port,()=>{console.log("server started at Port:"+port)})
+mongoose.connect(mongoURI)
+  .then(() => console.log('MongoDB connected'))
+  .catch(err => console.error('MongoDB connection error:', err));
+
+app.use('/auth', authRoutes);
+
+app.get('/protected', auth, (req, res) => {
+  res.send('This is a protected route, you are authenticated!');
+});
+
+app.listen(port, () => {
+  console.log(`Server started on port ${port}`);
+});
