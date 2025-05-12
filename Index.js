@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const connectDB = require('./dbconnect/dbconfig');
 const authRoutes = require('./routes/authRoutes');
+
 const cors = require('cors');
 const seedOwner = require('./seeder');
 
@@ -24,7 +25,11 @@ async function startServer() {
     app.use(cors());
     app.use(express.json());
 
+    // Auth endpoints
     app.use('/auth', authRoutes);
+
+    // Invoice endpoints
+    
 
     app.get('/', (req, res) => res.send('API is running...'));
 
