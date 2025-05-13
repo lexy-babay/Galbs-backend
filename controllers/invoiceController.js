@@ -1,3 +1,4 @@
+// controllers/invoiceController.js
 const Invoice = require('../models/invoice');
 
 // Create a new invoice
@@ -17,17 +18,14 @@ exports.updateInvoiceStatus = async (req, res) => {
   try {
     const { trackingNumber } = req.params;
     const { status } = req.body;
-
     const invoice = await Invoice.findOneAndUpdate(
       { trackingNumber },
       { status },
       { new: true }
     );
-
     if (!invoice) {
       return res.status(404).json({ message: 'Invoice not found' });
     }
-
     return res.status(200).json(invoice);
   } catch (err) {
     console.error("🛑 updateInvoiceStatus error:", err);
@@ -35,10 +33,15 @@ exports.updateInvoiceStatus = async (req, res) => {
   }
 };
 
-// 🔁 Get all invoices
+// Get all invoices, optionally filtered by status
+// e.g. GET /api/invoices?status=Pending
 exports.getAllInvoices = async (req, res) => {
   try {
-    const invoices = await Invoice.find().sort({ createdAt: -1 });
+    const filter = {};
+    if (req.query.status) {
+      filter.status = req.query.status;
+    }
+    const invoices = await Invoice.find(filter).sort({ createdAt: -1 });
     return res.status(200).json(invoices);
   } catch (err) {
     console.error("🛑 getAllInvoices error:", err);

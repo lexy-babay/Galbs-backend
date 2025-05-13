@@ -1,14 +1,16 @@
+// routes/invoiceRoutes.js
 const express = require('express');
-const router = express.Router();
-const ctrl = require('../controllers/invoiceController');
+const router  = express.Router();
+const ctrl    = require('../controllers/invoiceController');
 
-// POST    /api/invoices
+// POST   /api/invoices
 router.post('/invoices', ctrl.createInvoice);
 
-// PUT     /api/invoices/:trackingNumber/status
+// PUT    /api/invoices/:trackingNumber/status
 router.put('/invoices/:trackingNumber/status', ctrl.updateInvoiceStatus);
 
-// GET     /api/invoices
+// GET    /api/invoices
+// Optional query: ?status=Pending
 router.get('/invoices', ctrl.getAllInvoices);
 
 
