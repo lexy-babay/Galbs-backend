@@ -49,5 +49,20 @@ exports.getAllInvoices = async (req, res) => {
   }
 };
 
+// **NEW**: Get a single invoice by trackingNumber
+exports.getInvoiceByTracking = async (req, res) => {
+  try {
+    const { trackingNumber } = req.params;
+    const invoice = await Invoice.findOne({ trackingNumber });
+    if (!invoice) {
+      return res.status(404).json({ message: 'Invoice not found' });
+    }
+    return res.status(200).json(invoice);
+  } catch (err) {
+    console.error("🛑 getInvoiceByTracking error:", err);
+    return res.status(500).json({ error: err.message });
+  }
+};
+
 
 

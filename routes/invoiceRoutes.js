@@ -13,6 +13,9 @@ router.put('/invoices/:trackingNumber/status', ctrl.updateInvoiceStatus);
 // Optional query: ?status=Pending
 router.get('/invoices', ctrl.getAllInvoices);
 
+// **NEW** GET    /api/invoices/:trackingNumber
+router.get('/invoices/:trackingNumber', ctrl.getInvoiceByTracking);
+
 
 
 
