@@ -30,6 +30,8 @@ async function startServer() {
     app.use('/auth', authRoutes);
     app.use('/api', invoiceRoutes);
 
+
+    // Invoice endpoints
     // Health check
     app.get('/', (req, res) => res.send('API is running...'));
 
